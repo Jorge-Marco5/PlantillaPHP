@@ -1,4 +1,6 @@
 <div class="hero">
+    <!-- svg de php en ./public/images-->
+    <img src="/images/php.svg" alt="PHP Logo" class="php-logo">
     <h1><?= \App\Core\View::escape($data['title']) ?></h1>
     <p><?= \App\Core\View::escape($data['message']) ?></p>
     <p class="badge">Entorno: <?= \App\Core\View::escape($data['env']) ?></p>

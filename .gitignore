@@ -3,7 +3,7 @@
 .env
 .env.local
 .DS_Store
-Thumbs.db
+Thumbs.db:
 *.log
 *.cache
 /storage/*.log
