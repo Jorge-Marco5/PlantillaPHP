@@ -9,6 +9,8 @@ use App\Controllers\HomeController;
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/about', [HomeController::class, 'about']);
 
+$router->get('/health', [HomeController::class, 'health']);
+
 // Rutas de Usuarios (API)
 $router->get('/api/users', [UserController::class, 'index']);
 $router->get('/api/users/{id}', [UserController::class, 'show']);

@@ -16,7 +16,7 @@
                 <ul>
                     <li><a href="/">Inicio</a></li>
                     <li><a href="/about">Acerca</a></li>
-                    <li><a href="/api">API</a></li>
+                    <li><a href="/health">API</a></li>
                     <label class="switch">
                         <input type="checkbox" id="theme-toggle">
                         <span class="slider"></span>

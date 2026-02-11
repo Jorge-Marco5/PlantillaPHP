@@ -35,7 +35,7 @@ Edita el archivo `.env` con tus configuraciones.
 
 ```bash
 composer dev
-# O manualmente: php -S localhost:8000 -t public
+# O manualmente: php -S localhost:8000
 ```
 
 5. **Visitar la aplicación**
@@ -47,7 +47,6 @@ Abre tu navegador en: `http://localhost:8000`
 ```
 .
 ├── public/              # Directorio público (document root)
-│   ├── index.php       # Punto de entrada
 │   ├── css/            # Estilos
 │   ├── js/             # JavaScript
 │   └── images/         # Imágenes
@@ -69,6 +68,7 @@ Abre tu navegador en: `http://localhost:8000`
 ├── tests/              # Tests unitarios
 ├── .env.example        # Variables de entorno ejemplo
 ├── composer.json       # Dependencias
+├── index.php           # Punto de entrada
 └── README.md
 ```
 
@@ -138,10 +138,24 @@ Las vistas están en `views/`. Usar PHP nativo con escape automático:
 Configurar en `.env`:
 
 ```env
+# Configuración de la aplicación
+APP_NAME="PlantillaPHP"
+APP_ENV=development
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+# Base de datos
+DB_CONNECTION=mysql
 DB_HOST=localhost
-DB_NAME=mi_base
+DB_PORT=3306
+DB_NAME=mydatabase
 DB_USER=root
 DB_PASSWORD=
+DB_CHARSET=utf8mb4
+
+# Sesiones
+SESSION_LIFETIME=120
+SESSION_DRIVER=file
 ```
 
 Usar en tu código:
@@ -199,6 +213,7 @@ composer analyse
 - Para producción usa Apache/Nginx con `public/` como document root
 - Siempre escapa datos en las vistas para prevenir XSS
 - Usa prepared statements para prevenir SQL injection
+- Configura el archivo .env con tus variables de entorno y protege el archivo en el servidor
 
 ## 🤝 Contribuir
 
