@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $data['title'] ?? 'Mi Aplicación' ?> - <?= $_ENV['APP_NAME'] ?></title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
+
 <body>
     <header>
         <nav>
@@ -15,6 +17,10 @@
                     <li><a href="/">Inicio</a></li>
                     <li><a href="/about">Acerca</a></li>
                     <li><a href="/api">API</a></li>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
                 </ul>
             </div>
         </nav>
@@ -30,6 +36,7 @@
         </div>
     </footer>
 
-    <script src="/js/app.js"></script>
+    <script src="/public/js/app.js"></script>
 </body>
+
 </html>

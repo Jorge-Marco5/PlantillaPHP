@@ -7,6 +7,8 @@ namespace App\Controllers;
 use App\Core\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ErrorException;
+
 
 class HomeController extends Controller
 {
@@ -28,12 +30,4 @@ class HomeController extends Controller
         ]);
     }
 
-    public function api(Request $request): Response
-    {
-        return $this->json([
-            'status' => 'success',
-            'message' => 'API funcionando correctamente',
-            'timestamp' => date('Y-m-d H:i:s')
-        ]);
-    }
 }

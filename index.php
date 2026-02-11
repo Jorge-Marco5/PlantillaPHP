@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 // Autoload de Composer
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 // Cargar variables de entorno
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Importar dependencias
@@ -29,7 +29,7 @@ $request = Request::createFromGlobals();
 
 // Cargar rutas
 $router = new Router();
-require_once __DIR__ . '/../routes/web.php';
+require_once __DIR__ . '/routes/web.php';
 
 // Despachar la petición
 try {
