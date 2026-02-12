@@ -13,12 +13,12 @@
         <nav>
             <div class="container">
                 <button id="btn-open" class="btn-menu">
-                    <img src="/public/icons/dock_to_right.svg" alt="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M9 4l0 16" /></svg>
                 </button>
                 <a href="/" class="logo"><?= $_ENV['APP_NAME'] ?></a>
                 <ul id="main-nav" class="nav-links">
-                    <button id="btn-close" class="btn-close"><img src="/public/icons/close.svg" alt="Cerrar"></button>
-                    <a href="/" class="logo"><?= $_ENV['APP_NAME'] ?></a>
+                    <button id="btn-close" class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
+                    <br>
                     <li><a href="/">Inicio</a></li>
                     <li><a href="/about">Acerca</a></li>
                     <li><a href="/health">API</a></li>
@@ -32,8 +32,6 @@
             <div id="overlay" class="overlay"></div>
         </nav>
     </header>
-
-
 
     <main class="container">
         <?= $content ?>

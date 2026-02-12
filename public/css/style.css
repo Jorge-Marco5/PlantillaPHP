@@ -35,7 +35,7 @@ body.dark-mode {
   display: inline-block;
   border-radius: 34px;
   width: 50px;
-  height: 25px;
+  height: 26px;
 }
 
 .switch input {
@@ -57,8 +57,8 @@ body.dark-mode {
 .slider:before {
   position: absolute;
   content: "";
-  height: 15px;
-  width: 15px;
+  height: 16px;
+  width: 16px;
   left: 4px;
   bottom: 4px;
   background-color: var(--bg-circle);
