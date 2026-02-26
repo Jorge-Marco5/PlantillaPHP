@@ -19,44 +19,48 @@ class Router
      * Summary of get
      * @param string $path
      * @param callable|array<string, mixed> $handler
+     * @param array<string> $middlewares
      * @return void
      */
-    public function get(string $path, callable|array $handler): void
+    public function get(string $path, callable |array $handler, array $middlewares = []): void
     {
-        $this->addRoute('GET', $path, $handler);
+        $this->addRoute('GET', $path, $handler, $middlewares);
     }
 
     /**
      * Summary of post
      * @param string $path
      * @param callable|array<string, mixed> $handler
+     * @param array<string> $middlewares
      * @return void
      */
-    public function post(string $path, callable|array $handler): void
+    public function post(string $path, callable |array $handler, array $middlewares = []): void
     {
-        $this->addRoute('POST', $path, $handler);
+        $this->addRoute('POST', $path, $handler, $middlewares);
     }
 
     /**
      * Summary of put
      * @param string $path
      * @param callable|array<string, mixed> $handler
+     * @param array<string> $middlewares
      * @return void
      */
-    public function put(string $path, callable|array $handler): void
+    public function put(string $path, callable |array $handler, array $middlewares = []): void
     {
-        $this->addRoute('PUT', $path, $handler);
+        $this->addRoute('PUT', $path, $handler, $middlewares);
     }
 
     /**
      * Summary of delete
      * @param string $path
      * @param callable|array<string, mixed> $handler
+     * @param array<string> $middlewares
      * @return void
      */
-    public function delete(string $path, callable|array $handler): void
+    public function delete(string $path, callable |array $handler, array $middlewares = []): void
     {
-        $this->addRoute('DELETE', $path, $handler);
+        $this->addRoute('DELETE', $path, $handler, $middlewares);
     }
 
     /**
@@ -64,9 +68,10 @@ class Router
      * @param string $method
      * @param string $path
      * @param callable|array<string, mixed> $handler
+     * @param array<string> $middlewares
      * @return void
      */
-    private function addRoute(string $method, string $path, callable|array $handler): void
+    private function addRoute(string $method, string $path, callable |array $handler, array $middlewares = []): void
     {
         // Convertir parámetros dinámicos {id} a regex
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $path);
@@ -77,6 +82,7 @@ class Router
             'pattern' => $pattern,
             'path' => $path,
             'handler' => $handler,
+            'middlewares' => $middlewares
         ];
     }
 
@@ -99,7 +105,28 @@ class Router
                 // Extraer parámetros
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
 
-                return $this->callHandler($route['handler'], $request, $params);
+                // Construir la cadena de ejecución
+                // 1. El núcleo es la ejecución del controlador
+                $next = function ($req) use ($route, $params) {
+                    return $this->callHandler($route['handler'], $req, $params);
+                };
+
+                // 2. Envolver con midlewares (en orden inverso para que el primero registrado se ejecute primero)
+                $middlewares = $route['middlewares'] ?? [];
+
+                foreach (array_reverse($middlewares) as $middlewareClass) {
+                    $next = function ($req) use ($middlewareClass, $next) {
+                        $middlewareInstance = new $middlewareClass();
+                        // Asumiendo que el middleware tiene un método handle($request, $next)
+                        if (!method_exists($middlewareInstance, 'handle')) {
+                            throw new \RuntimeException("Middleware {$middlewareClass} does not have a handle method");
+                        }
+                        return $middlewareInstance->handle($req, $next);
+                    };
+                }
+
+                // 3. Ejecutar la cadena
+                return $next($request);
             }
         }
 
@@ -113,7 +140,7 @@ class Router
      * @param array<string, mixed> $params
      * @return Response
      */
-    private function callHandler(callable|array $handler, Request $request, array $params): Response
+    private function callHandler(callable |array $handler, Request $request, array $params): Response
     {
         try {
             if (is_array($handler)) {
@@ -122,11 +149,13 @@ class Router
                 $reflection = new \ReflectionMethod($controllerClass, $method);
                 $args = $this->resolveParameters($reflection, $request, $params);
                 $result = $controller->$method(...$args);
-            } elseif (is_object($handler) && !$handler instanceof \Closure) {
+            }
+            elseif (is_object($handler) && !$handler instanceof \Closure) {
                 $reflection = new \ReflectionMethod($handler, '__invoke');
                 $args = $this->resolveParameters($reflection, $request, $params);
                 $result = $handler(...$args);
-            } else {
+            }
+            else {
                 $reflection = new \ReflectionFunction($handler);
                 $args = $this->resolveParameters($reflection, $request, $params);
                 $result = $handler(...$args);
@@ -142,15 +171,16 @@ class Router
                 return new Response(
                     json_encode($result),
                     200,
-                    ['Content-Type' => 'application/json']
-                );
+                ['Content-Type' => 'application/json']
+                    );
             }
 
             // Si devuelve string, crear Response HTML
-            return new Response((string) $result);
+            return new Response((string)$result);
 
-        } catch (\Throwable $e) {
-             return new Response('Internal Server Error: ' . $e->getMessage(), 500);
+        }
+        catch (\Throwable $e) {
+            return new Response('Internal Server Error: ' . $e->getMessage(), 500);
         }
     }
 
@@ -180,8 +210,9 @@ class Router
             if (array_key_exists($name, $routeParams)) {
                 $val = $routeParams[$name];
                 if ($type instanceof \ReflectionNamedType && $type->getName() === 'int') {
-                    $args[] = (int) $val;
-                } else {
+                    $args[] = (int)$val;
+                }
+                else {
                     $args[] = $val;
                 }
                 continue;
@@ -194,20 +225,20 @@ class Router
                 $args[] = is_array($data) ? $data : [];
                 continue;
             }
-            
+
             // 4. Parámetros opcionales
             if ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();
                 continue;
             }
 
-             // 5. Null si permite nulos
+            // 5. Null si permite nulos
             if ($type && $type->allowsNull()) {
-                 $args[] = null;
-                 continue;
+                $args[] = null;
+                continue;
             }
 
-            // Fallback: lanzar error o ignorar (esto causará error de argumentos faltantes)
+        // Fallback: lanzar error o ignorar (esto causará error de argumentos faltantes)
         }
 
         return $args;

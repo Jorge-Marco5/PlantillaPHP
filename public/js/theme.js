@@ -1,24 +1,36 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("theme-toggle");
     const body = document.body;
+    const themePreference = window.matchMedia("(prefers-color-scheme: dark)");
 
-    if (!toggle) return;
+    /**
+     * Determina y aplica el tema adecuado basándose en la preferencia guardada
+     * en localStorage o, en su defecto, en la configuración del sistema.
+     */
+    const applyTheme = () => {
+        const storedTheme = localStorage.getItem("theme");
+        const isDark = storedTheme
+            ? storedTheme === "dark"
+            : themePreference.matches;
 
-    // 1. Cargar preferencia guardada
-    const currentTheme = localStorage.getItem("theme");
-    if (currentTheme === "dark") {
-        body.classList.add("dark-mode");
-        toggle.checked = true; // Sincroniza el switch visual
+        body.classList.toggle("dark-mode", isDark);
+        if (toggle) toggle.checked = isDark;
+    };
+
+    applyTheme();
+
+    if (toggle) {
+        toggle.addEventListener("change", () => {
+            const isDark = toggle.checked;
+            body.classList.toggle("dark-mode", isDark);
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
     }
 
-    // 2. Escuchar cambios en el switch
-    toggle.addEventListener("change", () => {
-        if (toggle.checked) {
-            body.classList.add("dark-mode");
-            localStorage.setItem("theme", "dark");
-        } else {
-            body.classList.remove("dark-mode");
-            localStorage.setItem("theme", "light");
+    themePreference.addEventListener("change", () => {
+        // Solo actualiza automáticamente si el usuario no ha establecido una preferencia manual
+        if (!localStorage.getItem("theme")) {
+            applyTheme();
         }
     });
 });

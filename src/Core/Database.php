@@ -29,7 +29,8 @@ class Database
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
             ]);
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             throw new \Exception("Error de conexión a la base de datos: " . $e->getMessage());
         }
     }
@@ -67,7 +68,9 @@ class Database
     }
 
     // Prevenir clonación
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 
     // Prevenir unserialize
     public function __wakeup()
