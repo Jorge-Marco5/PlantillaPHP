@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 ErrorHandler::register();
 
+//Instancia de la base de datos, activada por defecto
 Database::getInstance();
 
 $request = Request::createFromGlobals();
@@ -39,7 +40,6 @@ if (!$rateLimiter->check($request->getClientIp(), 60, 1)) {
 }
 
 if (session_status() === PHP_SESSION_NONE) {
-    // Definimos 30 días en segundos
     $lifetime = 60 * 60 * 24 * 30;
     session_start([
         'cookie_lifetime' => $lifetime,
@@ -52,6 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $router = new Router();
 require_once __DIR__ . '/routes/web.php';
+require_once __DIR__ . '/routes/api.php';
 
 $response = $router->dispatch($request);
 $response->send();

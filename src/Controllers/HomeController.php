@@ -40,5 +40,4 @@ class HomeController extends Controller
             'timestamp' => date('Y-m-d H:i:s'),
         ], 200);
     }
-
 }

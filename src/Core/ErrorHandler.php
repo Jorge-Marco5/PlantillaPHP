@@ -11,13 +11,13 @@ class ErrorHandler
 {
     public static function register(): void
     {
-        set_error_handler([self::class , 'handleError']);
-        set_exception_handler([self::class , 'handleException']);
+        set_error_handler([self::class, 'handleError']);
+        set_exception_handler([self::class, 'handleException']);
     }
 
     public static function handleError(int $level, string $message, string $file, int $line): bool
     {
-        if (error_reporting()& $level) {
+        if (error_reporting() & $level) {
             throw new \ErrorException($message, 0, $level, $file, $line);
         }
         return false;
@@ -39,8 +39,7 @@ class ErrorHandler
             $content = "<h1>Error 500</h1>";
             $content .= "<p>" . $exception->getMessage() . "</p>";
             $content .= "<pre>" . $exception->getTraceAsString() . "</pre>";
-        }
-        else {
+        } else {
             // Generic message for production
             $content = json_encode([
                 'status' => 'error',
@@ -56,8 +55,7 @@ class ErrorHandler
                 header('Content-Type: application/json');
                 echo $content;
                 exit;
-            }
-            else {
+            } else {
                 $content = "<h1>Error 500</h1><p>Internal Server Error</p>";
             }
         }
