@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloquear acceso directo a directorios internos y archivos sensibles
+    RewriteRule ^(src|var|db|routes|views|vendor)(/|$) - [F,L]
+    RewriteRule ^(\.env|composer\.(json|lock)|README\.md) - [F,L]
+
+    # Permitir acceso directo a recursos estáticos en /public
+    RewriteCond %{REQUEST_URI} ^/public/ [NC]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Redirigir el resto de peticiones al front controller
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Impedir listado de directorios
+Options -Indexes
