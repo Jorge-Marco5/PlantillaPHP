@@ -96,10 +96,10 @@ class UserController extends Controller
         try {
             $id = (int) $request->query->get('id');
             $data = json_decode($request->getContent(), true);
-            $name = (string) $data['name'] ?? '';
-            $email = (string) $data['email'] ?? '';
-            $role = (string) $data['role'] ?? '';
-            $is_blocked = (int) ($data['is_blocked'] ?? 0);
+            $name = (string) ($data['name'] ?? '');
+            $email = (string) ($data['email'] ?? '');
+            $role = (string) ($data['role'] ?? '');
+            $is_blocked = (bool) ($data['is_blocked'] ?? false);
 
 
             if (empty($id)) {
@@ -160,8 +160,8 @@ class UserController extends Controller
     {
         try {
             $data = json_decode($request->getContent(), true);
-            $email = (string) $data['email'] ?? '';
-            $password = (string) $data['password'] ?? '';
+            $email = (string) ($data['email'] ?? '');
+            $password = (string) ($data['password'] ?? '');
 
             if (empty($email) || empty($password)) {
                 return $this->json(['status' => 'error', 'message' => 'Todos los campos son obligatorios'], 400);

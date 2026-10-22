@@ -6,6 +6,9 @@ namespace App\Services;
 
 class UserServices
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function create(string $name, string $email, string $password): array
     {
         $password_hash = password_hash($password, PASSWORD_ARGON2I);
@@ -19,6 +22,9 @@ class UserServices
         return $data;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function update(int $id, string $name, string $email, string $role, string $password, bool $is_blocked): array
     {
         $password_hash = password_hash($password, PASSWORD_ARGON2I);
