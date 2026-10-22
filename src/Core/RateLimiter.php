@@ -22,9 +22,9 @@ class RateLimiter
      * @param string $key
      * @param int $limit
      * @param int $intervalInMinutes
-     * @return object {bool accepted, int start}
+     * @return object{accepted: bool, retry_after: int, remaining: int}
      */
-    public function consume(string $key, int $limit, int $intervalInMinutes = 1)
+    public function consume(string $key, int $limit, int $intervalInMinutes = 1): object
     {
         $factory = new RateLimiterFactory([
             'id' => 'limiter_' . md5($key),

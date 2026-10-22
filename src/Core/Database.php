@@ -49,6 +49,10 @@ class Database
         return $this->connection;
     }
 
+    /**
+     * @param array<int|string, mixed> $params
+     * @return array<int, array<string, mixed>>
+     */
     public function query(string $sql, array $params = []): array
     {
         $stmt = $this->connection->prepare($sql);
@@ -56,13 +60,16 @@ class Database
         return $stmt->fetchAll();
     }
 
+    /**
+     * @param array<int|string, mixed> $params
+     */
     public function execute(string $sql, array $params = []): bool
     {
         $stmt = $this->connection->prepare($sql);
         return $stmt->execute($params);
     }
 
-    public function lastInsertId(): string
+    public function lastInsertId(): string|false
     {
         return $this->connection->lastInsertId();
     }

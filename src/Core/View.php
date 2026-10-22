@@ -9,6 +9,9 @@ class View
     private static string $viewsPath = __DIR__ . '/../../views';
     private static string $layoutsPath = __DIR__ . '/../../views/layouts';
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public static function render(string $view, array $data = [], ?string $layout = 'main'): string
     {
         // Extraer variables para la vista
@@ -23,7 +26,7 @@ class View
         }
 
         require $viewFile;
-        $content = ob_get_clean();
+        $content = (string) ob_get_clean();
 
         // Si hay layout, renderizarlo con el contenido
         if ($layout !== null) {
@@ -35,17 +38,20 @@ class View
             }
 
             require $layoutFile;
-            $content = ob_get_clean();
+            $content = (string) ob_get_clean();
         }
 
         return $content;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public static function json(array $data, int $status = 200): string
     {
         http_response_code($status);
         header('Content-Type: application/json');
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return (string) json_encode($data, JSON_PRETTY_PRINT);
     }
 
     public static function escape(string $value): string

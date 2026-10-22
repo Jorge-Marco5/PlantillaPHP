@@ -10,12 +10,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class Controller
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function view(string $view, array $data = [], ?string $layout = 'main'): Response
     {
         $content = View::render($view, $data, $layout);
         return new Response($content);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function json(array $data, int $status = 200): JsonResponse
     {
         return new JsonResponse($data, $status);
