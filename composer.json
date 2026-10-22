@@ -3,7 +3,7 @@
     "description": "Plantilla moderna de PHP con arquitectura MVC",
     "type": "project",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "monolog/monolog": "^3.10",
         "symfony/cache": "^8.0",
         "symfony/http-foundation": "^7.0",

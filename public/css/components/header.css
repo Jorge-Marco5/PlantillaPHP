@@ -1,0 +1,135 @@
+header {
+    background: var(--bg);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.btn-menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text);
+    padding: 10px;
+}
+
+.btn-menu:hover {
+    color: var(--primary);
+}
+
+.btn-close {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text);
+    padding: 10px;
+}
+
+.btn-close:hover {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+    z-index: 50;
+}
+
+.nav-links li {
+    margin: 0;
+}
+
+
+
+@media (max-width: 1024px) {
+    .btn-menu {
+        display: block;
+    }
+
+    .nav-links {
+        /* Mobile/Tablet Sidebar Styles */
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        background: var(--bg);
+        border-right: 1px solid var(--border);
+        transition: 0.3s ease all;
+        z-index: 200;
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    .btn-close {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* Removed old sidebar classes */
+
+/* Overlay de fondo */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+}
+
+.overlay.active {
+    display: block;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px var(--border);
+    align-items: center;
+    padding: 1rem 0;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* nav ul styles moved to .nav-links */
+
+nav a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}

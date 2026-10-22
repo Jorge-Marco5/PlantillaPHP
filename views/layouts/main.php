@@ -13,18 +13,47 @@
         <nav>
             <div class="container">
                 <button id="btn-open" class="btn-menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M9 4l0 16" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
+                        <path d="M9 4l0 16" />
+                    </svg>
                 </button>
                 <a href="/" class="logo"><?= $_ENV['APP_NAME'] ?></a>
                 <ul id="main-nav" class="nav-links">
-                    <button id="btn-close" class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
+                    <button id="btn-close" class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M18 6l-12 12" />
+                            <path d="M6 6l12 12" />
+                        </svg></button>
                     <br>
                     <li><a href="/">Inicio</a></li>
                     <li><a href="/about">Acerca</a></li>
                     <li><a href="/health">API</a></li>
                     <label class="switch">
                         <input type="checkbox" id="theme-toggle">
-                        <span class="slider"></span>
+                        <span class="slider">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-moon" viewBox="0 0 24 24">
+                                <path fill="none" stroke="none" d="M0 0h24v24H0z" />
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-sun" viewBox="0 0 24 24">
+                                <path fill="none" stroke="none" d="M0 0h24v24H0z" />
+                                <circle cx="12" cy="12" r="4" />
+                                <path
+                                    d="M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7" />
+                            </svg>
+
+                        </span>
                     </label>
                 </ul>
             </div>

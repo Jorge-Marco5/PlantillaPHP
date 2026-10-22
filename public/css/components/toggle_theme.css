@@ -1,0 +1,105 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 64px;
+    min-width: 64px;
+    max-width: 64px;
+    height: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+    margin: 0;
+    pointer-events: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 7px;
+    box-sizing: border-box;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border);
+    border-radius: 32px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Iconos dentro del slider */
+.slider svg {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    max-width: 14px;
+    max-height: 14px;
+    stroke: var(--text);
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.slider .icon-tabler-moon {
+    opacity: 0.6;
+}
+
+.slider .icon-tabler-sun {
+    opacity: 0.9;
+}
+
+input:checked+.slider .icon-tabler-moon {
+    opacity: 0.9;
+}
+
+input:checked+.slider .icon-tabler-sun {
+    opacity: 0.6;
+}
+
+/* Puntero / Knob del switch */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    min-width: 22px;
+    min-height: 22px;
+    left: 3px;
+    top: 3px;
+    box-sizing: border-box;
+    background-color: var(--text);
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+input:checked+.slider:before {
+    transform: translateX(32px);
+}
+
+/* Posicionamiento en vistas de autenticación */
+.toggle-theme {
+    position: fixed !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
