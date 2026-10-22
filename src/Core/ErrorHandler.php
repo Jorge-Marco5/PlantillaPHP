@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Core\Logger;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ErrorHandler
@@ -32,32 +33,31 @@ class ErrorHandler
             'trace' => $exception->getTraceAsString()
         ]);
 
-        // Determine response based on environment
+        // Determine response based on environment and context
         $isDev = ($_ENV['APP_ENV'] ?? 'production') === 'development';
+        $isApi = str_contains($_SERVER['REQUEST_URI'] ?? '', '/api/');
+
+        if ($isApi) {
+            $payload = [
+                'status' => 'error',
+                'message' => $isDev ? $exception->getMessage() : 'Internal Server Error',
+                'code' => 500
+            ];
+            if ($isDev) {
+                $payload['file'] = $exception->getFile();
+                $payload['line'] = $exception->getLine();
+            }
+            $response = new JsonResponse($payload, 500);
+            $response->send();
+            exit;
+        }
 
         if ($isDev) {
             $content = "<h1>Error 500</h1>";
-            $content .= "<p>" . $exception->getMessage() . "</p>";
-            $content .= "<pre>" . $exception->getTraceAsString() . "</pre>";
+            $content .= "<p>" . htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8') . "</p>";
+            $content .= "<pre>" . htmlspecialchars($exception->getTraceAsString(), ENT_QUOTES, 'UTF-8') . "</pre>";
         } else {
-            // Generic message for production
-            $content = json_encode([
-                'status' => 'error',
-                'message' => 'Internal Server Error',
-                'code' => 500
-            ]);
-
-            // If request expects JSON (simple check for now, can be improved)
-            // Ideally we check Accept header, but for now we output JSON if it looks like API or HTML otherwise.
-            // Let's stick to JSON for API context or simple HTML for web.
-            // Since this is a hybrid app, let's output JSON if the URL contains /api/
-            if (str_contains($_SERVER['REQUEST_URI'] ?? '', '/api/')) {
-                header('Content-Type: application/json');
-                echo $content;
-                exit;
-            } else {
-                $content = "<h1>Error 500</h1><p>Internal Server Error</p>";
-            }
+            $content = "<h1>Error 500</h1><p>Internal Server Error</p>";
         }
 
         $response = new Response($content, 500);

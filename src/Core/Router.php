@@ -135,53 +135,42 @@ class Router
 
     /**
      * Summary of callHandler
-     * @param callable|array<string, mixed> $handler
+     * @param callable|array<int|string, mixed> $handler
      * @param Request $request
      * @param array<string, mixed> $params
      * @return Response
      */
-    private function callHandler(callable |array $handler, Request $request, array $params): Response
+    private function callHandler(callable|array $handler, Request $request, array $params): Response
     {
-        try {
-            if (is_array($handler)) {
-                [$controllerClass, $method] = $handler;
-                $controller = new $controllerClass();
-                $reflection = new \ReflectionMethod($controllerClass, $method);
-                $args = $this->resolveParameters($reflection, $request, $params);
-                $result = $controller->$method(...$args);
-            }
-            elseif (is_object($handler) && !$handler instanceof \Closure) {
-                $reflection = new \ReflectionMethod($handler, '__invoke');
-                $args = $this->resolveParameters($reflection, $request, $params);
-                $result = $handler(...$args);
-            }
-            else {
-                $reflection = new \ReflectionFunction($handler);
-                $args = $this->resolveParameters($reflection, $request, $params);
-                $result = $handler(...$args);
-            }
-
-            // Si devuelve un Response, usarlo directamente
-            if ($result instanceof Response) {
-                return $result;
-            }
-
-            // Si devuelve un array, convertir a JSON
-            if (is_array($result)) {
-                return new Response(
-                    json_encode($result),
-                    200,
-                ['Content-Type' => 'application/json']
-                    );
-            }
-
-            // Si devuelve string, crear Response HTML
-            return new Response((string)$result);
-
+        if (is_array($handler)) {
+            [$controllerClass, $method] = $handler;
+            $controller = new $controllerClass();
+            $reflection = new \ReflectionMethod($controllerClass, $method);
+            $args = $this->resolveParameters($reflection, $request, $params);
+            $result = $controller->$method(...$args);
+        } elseif (is_object($handler) && !$handler instanceof \Closure) {
+            $reflection = new \ReflectionMethod($handler, '__invoke');
+            $args = $this->resolveParameters($reflection, $request, $params);
+            $result = $handler(...$args);
+        } else {
+            $closure = \Closure::fromCallable($handler);
+            $reflection = new \ReflectionFunction($closure);
+            $args = $this->resolveParameters($reflection, $request, $params);
+            $result = $closure(...$args);
         }
-        catch (\Throwable $e) {
-            return new Response('Internal Server Error: ' . $e->getMessage(), 500);
+
+        // Si devuelve un Response, usarlo directamente
+        if ($result instanceof Response) {
+            return $result;
         }
+
+        // Si devuelve un array, convertir a JSON
+        if (is_array($result)) {
+            return new JsonResponse($result, 200);
+        }
+
+        // Si devuelve string, crear Response HTML
+        return new Response((string)$result);
     }
 
     /**
