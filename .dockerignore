@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+.vscode
+.idea
+node_modules
+vendor
+var/cache/*
+var/log/*
+.phpunit.result.cache
+README.md

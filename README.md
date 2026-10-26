@@ -4,7 +4,7 @@ Plantilla lista para usar con arquitectura MVC, routing moderno y mejores práct
 
 ## 📋 Requisitos
 
-- PHP 8.2 o superior
+- PHP 8.5
 - Composer
 - MySQL/MariaDB (opcional)
 
@@ -13,9 +13,46 @@ Plantilla lista para usar con arquitectura MVC, routing moderno y mejores práct
 1. **Clonar/Descargar el proyecto**
 
 ```bash
-git clone <tu-repo>
-cd tu-proyecto
+git clone <url-del-repositorio>
+cd proyecto
 ```
+
+
+### Con Docker
+
+2. **Levantar y construir los contenedores de PHP, Nginx y Mysql**
+
+```bash
+composer docker:up
+```
+
+3. **Visitar la aplicación en [http://localhost:8000](http://localhost:8000)**
+
+4. **Detener y eliminar los contenedores:**
+```bash
+composer docker:down
+```
+
+4. **Detener y eliminar los contenedoresa asi como volumenes persistentes:**
+```bash
+composer docker:delete
+```
+
+5. **Reiniciar los servicios**
+```bash
+composer docker:restart
+```
+
+6. **Ver logs en tiempo real**
+```bash
+composer docker:logs
+```
+7. **Ejecutar composer install dentro del contenedor PHP**
+```bash
+composer docker:install
+```
+
+### Local:
 
 2. **Instalar dependencias**
 
@@ -41,6 +78,35 @@ composer dev
 5. **Visitar la aplicación**
 
 Abre tu navegador en: `http://localhost:8000`
+
+
+## 🗄️ Base de Datos
+
+Configurar en `.env`:
+
+```env
+# Configuración de la aplicación
+APP_NAME="PlantillaPHP"
+APP_ENV=development
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+APP_PORT=8000
+
+# Base de datos (usar DB_HOST=db con Docker, o DB_HOST=localhost en local)
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_EXTERNAL_PORT=3307
+DB_NAME=mydatabase
+DB_USER=root
+DB_PASSWORD=root
+DB_ROOT_PASSWORD=root
+DB_CHARSET=utf8mb4
+
+# Sesiones
+SESSION_LIFETIME=120
+SESSION_DRIVER=file
+```
 
 ## 📁 Estructura del Proyecto
 
@@ -133,32 +199,7 @@ Las vistas están en `views/`. Usar PHP nativo con escape automático:
 <?php endforeach; ?>
 ```
 
-## 🗄️ Base de Datos
-
-Configurar en `.env`:
-
-```env
-# Configuración de la aplicación
-APP_NAME="PlantillaPHP"
-APP_ENV=development
-APP_DEBUG=true
-APP_URL=http://localhost:8000
-
-# Base de datos
-DB_CONNECTION=mysql
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=mydatabase
-DB_USER=root
-DB_PASSWORD=
-DB_CHARSET=utf8mb4
-
-# Sesiones
-SESSION_LIFETIME=120
-SESSION_DRIVER=file
-```
-
-Usar en tu código:
+## Consultas a base de datos
 
 ```php
 use App\Core\Database;
@@ -193,14 +234,6 @@ composer analyse
 - `composer test` - Ejecuta tests
 - `composer analyse` - Análisis estático con PHPStan
 
-## 🎯 Próximos Pasos
-
-1. Crear tus modelos en `src/Models/`
-2. Agregar tus controladores en `src/Controllers/`
-3. Definir tus rutas en `routes/web.php`
-4. Crear tus vistas en `views/`
-5. Agregar estilos en `public/css/`
-
 ## 📚 Recursos
 
 - [Documentación PHP](https://www.php.net/manual/es/)
@@ -214,11 +247,3 @@ composer analyse
 - Siempre escapa datos en las vistas para prevenir XSS
 - Usa prepared statements para prevenir SQL injection
 - Configura el archivo .env con tus variables de entorno y protege el archivo en el servidor
-
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! Abre un issue o PR.
-
-## 📄 Licencia
-
-MIT

@@ -30,7 +30,16 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "php -S 0.0.0.0:8000"
-        ]
+        ],
+        "docker:up": "docker compose up -d --build",
+        "docker:down": "docker compose down",
+        "docker:delete": "docker compose down -v",
+        "docker:restart": "docker compose restart",
+        "docker:logs": [
+            "Composer\\Config::disableProcessTimeout",
+            "docker compose logs -f"
+        ],
+        "docker:install": "docker compose exec app composer install"
     },
     "config": {
         "optimize-autoloader": true,
